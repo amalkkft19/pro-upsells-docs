@@ -1,0 +1,20 @@
+---
+/** The row of four cards on the docs home page. */
+interface Props {
+  links: { title: string; href: string; description: string }[];
+}
+const { links } = Astro.props;
+---
+
+<ul class="pu-cards pu-cards-4">
+  {
+    links.map((link) => (
+      <li>
+        <a class="pu-card" href={link.href}>
+          <span class="pu-card-title">{link.title}</span>
+          <span class="pu-card-desc">{link.description}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

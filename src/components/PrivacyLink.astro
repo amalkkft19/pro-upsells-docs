@@ -1,0 +1,14 @@
+---
+/** Links to the privacy policy once its address is set in src/site.config.ts. */
+import { site } from '../site.config';
+---
+
+{
+  site.privacyPolicyUrl ? (
+    <a href={site.privacyPolicyUrl} target="_blank" rel="noopener">
+      Privacy policy
+    </a>
+  ) : (
+    <span>Privacy policy</span>
+  )
+}

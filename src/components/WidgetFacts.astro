@@ -1,0 +1,68 @@
+---
+/**
+ * <WidgetFacts
+ *   bestFor="..."
+ *   showsOn="..."
+ *   needsBlock="..." />
+ * Wrap merchant labels in **double asterisks** to bold them, like in Markdown.
+ */
+interface Props {
+  bestFor: string;
+  showsOn: string;
+  needsBlock: string;
+}
+const { bestFor, showsOn, needsBlock } = Astro.props;
+
+const esc = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const fmt = (s: string) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+const rows = [
+  { label: 'Best for', value: bestFor },
+  { label: 'Shows on', value: showsOn },
+  { label: 'Needs a theme block', value: needsBlock },
+];
+---
+
+<dl class="pu-facts">
+  {
+    rows.map((row) => (
+      <div class="pu-facts-row">
+        <dt>{row.label}</dt>
+        <dd set:html={fmt(row.value)} />
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .pu-facts {
+    margin: 1.5rem 0;
+    border: 1px solid var(--pu-border);
+    border-radius: 8px;
+    background: var(--pu-surface);
+    overflow: hidden;
+  }
+  .pu-facts-row {
+    display: grid;
+    gap: 0.125rem;
+    padding: 0.75rem 1rem;
+  }
+  .pu-facts-row + .pu-facts-row { border-top: 1px solid var(--pu-border); }
+  dt {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--pu-text-2);
+  }
+  dd {
+    margin: 0;
+    padding: 0;
+    color: var(--pu-text);
+  }
+  @media (min-width: 40rem) {
+    .pu-facts-row {
+      grid-template-columns: 11.5rem 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

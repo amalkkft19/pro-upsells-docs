@@ -1,0 +1,51 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { site } from '../../site.config';
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<nav class="pu-footer" aria-label="Footer">
+  <ul>
+    <li><a href="/contact/">Contact support</a></li>
+    {
+      site.privacyPolicyUrl && (
+        <li>
+          <a href={site.privacyPolicyUrl} target="_blank" rel="noopener">
+            Privacy policy
+          </a>
+        </li>
+      )
+    }
+    {
+      site.appStoreUrl && (
+        <li>
+          <a href={site.appStoreUrl} target="_blank" rel="noopener">
+            Pro Upsells on the Shopify App Store
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</nav>
+
+<style>
+  .pu-footer {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--pu-border);
+    font-size: 0.875rem;
+  }
+  .pu-footer ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pu-footer a {
+    color: var(--sl-color-text-accent);
+  }
+  .pu-footer a:hover { color: var(--sl-color-white); }
+</style>

@@ -1,0 +1,357 @@
+/* ==========================================================================
+   Pro Upsells Docs: theme
+   One file for the whole look. Colours come from the owner's brief and the
+   logo (#FD4C31). The brand red-orange is too light for text on white, so
+   links and buttons use a darker shade that passes WCAG AA (5.8:1 on white).
+   ========================================================================== */
+
+/* Same metrics as Inter, built from Arial, so the page doesn't jump when the real font loads. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.5%;
+  line-gap-override: 0%;
+}
+
+/* ---------- Colour tokens: dark (Starlight's default) ---------- */
+:root {
+  --pu-bg: #111418;
+  --pu-surface: #1a1e23;
+  --pu-border: #2c3238;
+  --pu-border-strong: #5b6670; /* 3:1 against the page, for control outlines */
+  --pu-text: #f2f4f5;
+  --pu-text-2: #a9b2ba;
+  --pu-info: #7fb0ff;
+  --pu-success: #5fd39a;
+  --pu-warning: #f0be5c;
+  --pu-danger: #ff9c95;
+  --pu-plus: #c9d0d6;
+  --pu-brand: #fd4c31; /* sampled from the logo. Decoration only, never text. */
+  --pu-accent: #ff8571;
+  --pu-accent-low: #2e1e1c;
+
+  --sl-font: 'Inter Variable', 'Inter Fallback';
+
+  /* Map our tokens onto Starlight's. */
+  --sl-color-white: var(--pu-text);
+  --sl-color-gray-1: #e6eaed;
+  --sl-color-gray-2: #d3d9de;
+  --sl-color-gray-3: var(--pu-text-2);
+  --sl-color-gray-4: #8a949d;
+  --sl-color-gray-5: var(--pu-border);
+  --sl-color-gray-6: var(--pu-surface);
+  --sl-color-gray-7: var(--pu-surface);
+  --sl-color-black: var(--pu-bg);
+
+  --sl-color-bg: var(--pu-bg);
+  --sl-color-bg-nav: var(--pu-bg);
+  --sl-color-bg-sidebar: var(--pu-bg);
+  --sl-color-bg-inline-code: var(--pu-surface);
+  --sl-color-hairline: var(--pu-border);
+  --sl-color-hairline-light: var(--pu-border);
+  --sl-color-hairline-shade: var(--pu-border);
+  --sl-color-text: var(--pu-text);
+
+  --sl-color-accent: var(--pu-accent);
+  --sl-color-accent-high: var(--pu-accent);
+  --sl-color-accent-low: var(--pu-accent-low);
+  --sl-color-text-accent: var(--pu-accent);
+  --sl-color-bg-accent: var(--pu-accent);
+  --sl-color-text-invert: #14191d;
+
+  /* Type: 16px body, 1.65 line height, H1 30px (36px on desktop), H2 24px, H3 19px. */
+  --sl-text-body: 1rem;
+  --sl-line-height: 1.65;
+  --sl-line-height-headings: 1.25;
+  --sl-text-h1: 1.875rem;
+  --sl-text-h2: 1.5rem;
+  --sl-text-h3: 1.1875rem;
+  --sl-text-h4: 1rem;
+  --sl-text-h5: 1rem;
+
+  /* Very little shadow. */
+  --sl-shadow-sm: none;
+  --sl-shadow-md: 0 1px 2px rgb(0 0 0 / 0.2);
+  --sl-shadow-lg: 0 2px 8px rgb(0 0 0 / 0.25);
+}
+
+/* ---------- Colour tokens: light ---------- */
+:root[data-theme='light'] {
+  --pu-bg: #ffffff;
+  --pu-surface: #f5f6f7;
+  --pu-border: #e3e5e8;
+  --pu-border-strong: #8a949d;
+  --pu-text: #14191d;
+  --pu-text-2: #5c6670;
+  --pu-info: #1f5fbf;
+  --pu-success: #1a7f4b;
+  --pu-warning: #9a6200;
+  --pu-danger: #b3261e;
+  --pu-plus: #343c43;
+  --pu-accent: #bf2e15;
+  --pu-accent-low: #faeeec;
+
+  --sl-color-white: var(--pu-text);
+  --sl-color-gray-1: #1f262b;
+  --sl-color-gray-2: #343c43;
+  --sl-color-gray-3: var(--pu-text-2);
+  --sl-color-gray-4: #6b757e;
+  --sl-color-gray-5: #d3d7db;
+  --sl-color-gray-6: var(--pu-border);
+  --sl-color-gray-7: var(--pu-surface);
+  --sl-color-black: var(--pu-bg);
+
+  --sl-color-bg-inline-code: var(--pu-surface);
+  --sl-color-text-invert: #ffffff;
+
+  --sl-shadow-md: 0 1px 2px rgb(20 25 29 / 0.06);
+  --sl-shadow-lg: 0 2px 8px rgb(20 25 29 / 0.1);
+}
+
+@media (min-width: 50em) {
+  :root {
+    --sl-text-h1: 2.25rem;
+  }
+}
+
+/* ---------- Page and prose ---------- */
+body {
+  font-feature-settings: 'cv11', 'ss03';
+}
+
+/* Keep lines to about 72 characters. */
+.sl-markdown-content :is(p, li, dd, blockquote) {
+  max-width: 72ch;
+}
+
+.sl-markdown-content h2 {
+  margin-top: 2.5rem;
+}
+.sl-markdown-content h3 {
+  margin-top: 2rem;
+}
+
+.sl-markdown-content strong {
+  font-weight: 600;
+  color: var(--pu-text);
+}
+
+.sl-markdown-content :not(pre) > code {
+  border: 1px solid var(--pu-border);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  font-size: 0.875em;
+}
+
+/* Tables scroll inside themselves, never the whole page. */
+.sl-markdown-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.sl-markdown-content :is(th, td) {
+  border-color: var(--pu-border);
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--sl-color-text-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Header, search and sidebar ---------- */
+header.header {
+  border-bottom: 1px solid var(--pu-border);
+}
+
+site-search button[data-open-modal] {
+  border: 1px solid var(--pu-border-strong);
+  border-radius: 8px;
+  background: var(--pu-bg);
+  color: var(--pu-text-2);
+}
+site-search button[data-open-modal]:hover {
+  border-color: var(--sl-color-text-accent);
+  color: var(--pu-text);
+}
+
+.sidebar-content {
+  font-size: 0.9375rem;
+}
+.sidebar-content summary .large {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--pu-text);
+}
+.sidebar-content a {
+  border-radius: 8px;
+}
+
+/* ---------- Steps ---------- */
+.sl-steps {
+  --bullet-size: 1.75rem;
+}
+
+/* ---------- Link cards (docs home and "Next steps") ---------- */
+.pu-cards {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pu-cards > li {
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+.pu-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  height: 100%;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--pu-border);
+  border-radius: 8px;
+  background: var(--pu-bg);
+  color: var(--pu-text);
+  text-decoration: none;
+}
+.pu-card:hover {
+  border-color: var(--sl-color-text-accent);
+  background: var(--pu-surface);
+}
+.pu-card-title {
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--pu-text);
+}
+.pu-card:hover .pu-card-title {
+  color: var(--sl-color-text-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.pu-card-desc {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--pu-text-2);
+}
+.pu-cards-2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+.pu-cards-4 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+}
+
+/* ---------- Docs home ---------- */
+.pu-home-intro {
+  max-width: 40rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+  color: var(--pu-text-2);
+}
+.pu-goals ul {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pu-goals li {
+  margin: 0;
+  padding: 0;
+}
+.pu-goals li a {
+  font-weight: 600;
+}
+.pu-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  margin-top: 2.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--pu-border);
+  border-radius: 8px;
+  background: var(--pu-surface);
+}
+.pu-help p {
+  margin: 0;
+  max-width: none;
+}
+.pu-help-title {
+  font-weight: 600;
+  color: var(--pu-text);
+}
+.pu-help ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pu-help li {
+  margin: 0;
+  padding: 0;
+}
+
+.pu-muted {
+  font-size: 0.9375rem;
+  color: var(--pu-text-2);
+}
+
+/* ---------- Buttons and header links ---------- */
+.sl-link-button {
+  border-radius: 8px;
+  font-weight: 600;
+}
+.pu-contact-link {
+  text-decoration: none;
+}
+.pu-contact-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Pages without a sidebar (home, 404): no rule under the title. */
+:root:not([data-has-sidebar]) .content-panel {
+  border-bottom: 0;
+}
+
+/* ---------- Calmer current-page marker in the sidebar ---------- */
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover {
+  background: var(--pu-accent-low);
+  color: var(--sl-color-text-accent);
+  font-weight: 600;
+}
+
+/* Previous / next links at the bottom of a page: smaller title. */
+.pagination-links a {
+  border-color: var(--pu-border);
+  border-radius: 8px;
+}
+.pagination-links a:hover {
+  border-color: var(--sl-color-text-accent);
+}
+.pagination-links .link-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+}

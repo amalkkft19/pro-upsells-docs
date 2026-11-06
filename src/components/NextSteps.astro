@@ -1,0 +1,23 @@
+---
+/**
+ * Put this under a "## Next steps" heading at the end of a page:
+ *   <NextSteps links={[{ title: 'Volume Discount', href: '/widgets/volume-discount/', description: 'Optional' }]} />
+ */
+interface Props {
+  links: { title: string; href: string; description?: string }[];
+}
+const { links } = Astro.props;
+---
+
+<ul class="pu-cards pu-cards-2">
+  {
+    links.map((link) => (
+      <li>
+        <a class="pu-card" href={link.href}>
+          <span class="pu-card-title">{link.title}</span>
+          {link.description && <span class="pu-card-desc">{link.description}</span>}
+        </a>
+      </li>
+    ))
+  }
+</ul>

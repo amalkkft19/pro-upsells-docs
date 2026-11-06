@@ -1,0 +1,72 @@
+---
+/**
+ * <Callout type="note|tip|warning|plus"> ... </Callout>
+ * Always shows an icon AND a text label, so meaning never depends on colour alone.
+ */
+interface Props {
+  type?: 'note' | 'tip' | 'warning' | 'plus';
+  /** Override the label. Rarely needed. */
+  title?: string;
+}
+const { type = 'note', title } = Astro.props;
+const labels = { note: 'Note', tip: 'Tip', warning: 'Warning', plus: 'Shopify Plus only' } as const;
+const label = title ?? labels[type];
+const icons: Record<string, string> = {
+  note: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  tip: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+  warning:
+    '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  plus: '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8"/><path d="M8 12h8"/>',
+};
+---
+
+<aside class={`pu-callout pu-callout-${type}`} aria-label={label}>
+  <p class="pu-callout-head">
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      set:html={icons[type]}
+    />
+    <span>{label}</span>
+  </p>
+  <div class="pu-callout-body"><slot /></div>
+</aside>
+
+<style>
+  .pu-callout {
+    --c: var(--pu-info);
+    margin-block: 1.5rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid color-mix(in srgb, var(--c) 40%, var(--pu-border));
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--c) 6%, var(--pu-bg));
+    color: var(--pu-text);
+  }
+  .pu-callout-tip { --c: var(--pu-success); }
+  .pu-callout-warning { --c: var(--pu-warning); }
+  .pu-callout-plus { --c: var(--pu-plus); }
+
+  .pu-callout-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--c);
+  }
+  .pu-callout-head svg { flex: none; }
+
+  .pu-callout-body > :global(:first-child) { margin-top: 0; }
+  .pu-callout-body > :global(:last-child) { margin-bottom: 0; }
+  .pu-callout-body > :global(* + *) { margin-top: 0.75rem; }
+</style>

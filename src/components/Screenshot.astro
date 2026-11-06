@@ -1,0 +1,195 @@
+---
+/**
+ * <Screenshot src="offer-general.png" alt="..." caption="..." />
+ *
+ * - `src` is a file name inside /public/images/
+ * - `alt` is required (describe what the merchant sees)
+ * - If the file is missing: nothing is shown in production, and a labelled
+ *   placeholder is shown while you run `npm run dev`.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import sharp from 'sharp';
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  /** Set true for an image at the very top of a page, so it loads first. */
+  eager?: boolean;
+}
+const { src, alt, caption, eager = false } = Astro.props;
+
+if (!alt || !alt.trim()) {
+  throw new Error(`<Screenshot src="${src}"> needs alt text. Describe what the merchant sees.`);
+}
+
+const file = path.join(process.cwd(), 'public', 'images', src);
+const exists = fs.existsSync(file);
+let width: number | undefined;
+let height: number | undefined;
+if (exists) {
+  const meta = await sharp(file).metadata();
+  width = meta.width;
+  height = meta.height;
+}
+const url = `/images/${src}`;
+const isDev = import.meta.env.DEV;
+---
+
+{
+  exists ? (
+    <figure class="pu-shot">
+      <a
+        class="pu-shot-link"
+        href={url}
+        target="_blank"
+        rel="noopener"
+        aria-haspopup="dialog"
+        title="Click to enlarge"
+      >
+        <img
+          src={url}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      </a>
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  ) : isDev ? (
+    <figure class="pu-shot pu-shot-missing">
+      <div class="pu-shot-placeholder" role="note">
+        <strong>Screenshot needed (only visible in development)</strong>
+        <span>
+          Add <code>public/images/{src}</code>
+        </span>
+        <span>Alt text: {alt}</span>
+      </div>
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  ) : null
+}
+
+<script>
+  // Click to enlarge. Without JavaScript the link opens the image in a new tab.
+  let dialog: HTMLDialogElement | null = null;
+
+  function getDialog() {
+    if (dialog) return dialog;
+    dialog = document.createElement('dialog');
+    dialog.className = 'pu-shot-dialog';
+    dialog.setAttribute('aria-label', 'Enlarged screenshot');
+    dialog.innerHTML =
+      '<button type="button" class="pu-shot-close" aria-label="Close enlarged screenshot">Close</button>' +
+      '<img alt="" /><p class="pu-shot-dialog-caption"></p>';
+    dialog.addEventListener('click', (e) => {
+      // Click on the dark backdrop or the close button closes it.
+      if (e.target === dialog || (e.target as HTMLElement).closest('.pu-shot-close')) dialog?.close();
+    });
+    document.body.appendChild(dialog);
+    return dialog;
+  }
+
+  document.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a.pu-shot-link');
+    if (!link || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const img = link.querySelector('img');
+    if (!img) return;
+    e.preventDefault();
+    const d = getDialog();
+    const big = d.querySelector('img')!;
+    big.src = link.href;
+    big.alt = img.alt;
+    d.querySelector('.pu-shot-dialog-caption')!.textContent =
+      link.parentElement?.querySelector('figcaption')?.textContent ?? '';
+    d.showModal();
+  });
+</script>
+
+<style>
+  .pu-shot {
+    margin: 1.5rem 0;
+  }
+  .pu-shot-link {
+    display: block;
+    border: 1px solid var(--pu-border-strong);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    cursor: zoom-in;
+    line-height: 0;
+  }
+  .pu-shot-link:focus-visible {
+    outline: 3px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
+  }
+  .pu-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+  .pu-shot figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--pu-text-2);
+  }
+  .pu-shot-placeholder {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1.5rem;
+    border: 2px dashed var(--pu-border-strong);
+    border-radius: 8px;
+    background: var(--pu-surface);
+    color: var(--pu-text-2);
+    font-size: 0.875rem;
+  }
+  .pu-shot-placeholder strong { color: var(--pu-text); }
+  .pu-shot-placeholder code { overflow-wrap: anywhere; }
+</style>
+
+<style is:global>
+  .pu-shot-dialog {
+    max-width: 96vw;
+    max-height: 96vh;
+    padding: 0.75rem;
+    border: 1px solid var(--pu-border-strong);
+    border-radius: 8px;
+    background: var(--pu-bg);
+    color: var(--pu-text);
+    overflow: auto;
+  }
+  .pu-shot-dialog::backdrop { background: rgb(10 12 14 / 0.75); }
+  .pu-shot-dialog img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(96vh - 5.5rem);
+    margin: 0 auto;
+    border: 1px solid var(--pu-border);
+    border-radius: 4px;
+  }
+  .pu-shot-dialog-caption {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+    color: var(--pu-text-2);
+  }
+  .pu-shot-dialog-caption:empty { display: none; }
+  .pu-shot-close {
+    display: block;
+    margin: 0 0 0.5rem auto;
+    padding: 0.375rem 0.875rem;
+    border: 1px solid var(--pu-border-strong);
+    border-radius: 8px;
+    background: var(--pu-surface);
+    color: var(--pu-text);
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pu-shot-close:hover { background: var(--pu-border); }
+</style>

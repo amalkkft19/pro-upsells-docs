@@ -1,0 +1,25 @@
+---
+import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
+---
+
+<div class="pu-mobile-footer">
+  <a class="pu-contact-link" href="/contact/">Contact support</a>
+  <ThemeSelect />
+</div>
+
+<style>
+  .pu-mobile-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--pu-border);
+  }
+  .pu-contact-link {
+    color: var(--sl-color-text-accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+</style>

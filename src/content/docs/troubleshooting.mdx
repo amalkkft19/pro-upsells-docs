@@ -1,0 +1,78 @@
+---
+title: Troubleshooting
+description: Fix common Pro Upsells problems, from an offer that isn't showing to a discount that isn't applying or a Slide Cart that won't open.
+---
+
+Find your problem below. Most issues come down to the app embed, a missing block, or a trigger that doesn't match.
+
+## My offer isn't showing
+
+Check these in order:
+
+1. **App embed:** **Pro Upsells** is on in **App embeds**, on your live theme.
+2. **Offer status:** the offer is active and saved.
+3. **Block:** for **Embedded**, the right block is on that exact page type.
+4. **Display page:** it matches the page you're viewing.
+5. **Trigger:** the product, collection or cart value matches.
+6. **Products:** they're hidden if sold out with **Hide out-of-stock products** on, or if already in the cart with **Hide product if already in cart** on. Deleted products are left out.
+7. **Cache:** check in a private window.
+
+## The widget is in the wrong place
+
+Move the block in the theme editor. If there's no block, the offer uses **Placement** in the offer's **Settings**.
+
+## I see a note in the theme editor instead of my offer
+
+The block has no active offer for this page. If an offer shows elsewhere on the page, you have two blocks of the same type, so remove the extra one.
+
+## I see a grey loading shape before the offer appears
+
+This is normal. The app reserves the offer's space so your page doesn't jump when it loads. The size adjusts automatically after the first visits.
+
+## Add to cart shows an error
+
+The message comes from Shopify, usually because the product is sold out or above its available stock. Check the product's inventory.
+
+## The discount isn't applying
+
+- The offer's **Minimum purchase quantity** must be met.
+- With **Cross-sell**, the trigger product must be in the cart.
+- Other discounts may not combine with it. Check the combination settings of your other Shopify discounts.
+- Check the method under **Settings > Discount apply method** in **Upsells**.
+
+## The free gift isn't added
+
+The app embed must be on, the gift must have stock, the cart must have at least one product, and the trigger must match. The gift is added once per offer for a shopper, so test in a new private window.
+
+## The Slide Cart doesn't open
+
+Check that **Pro Upsells: Slide Cart** is on in **App embeds**. If your theme uses a custom cart button, it may need setting under **HTML Element Identifiers** in **Customize**. [Contact support](/contact/) if you need help.
+
+## Shoppers aren't seeing the notification prompt
+
+**Enable web push notifications** must be on. A shopper who refused in their browser or chose **Not now** in the past week won't see it. iPhone shoppers must add your store to their home screen first.
+
+## A checkout block isn't showing
+
+The **Checkout** page needs Shopify Plus. Check that the block is saved in the checkout editor and that the offer's **Display page** matches.
+
+## Still stuck?
+
+[Contact support](/contact/) and include your store address, the offer's name and a screenshot.
+
+## Next steps
+
+<NextSteps
+  links={[
+    {
+      title: 'Contact support',
+      href: '/contact/',
+      description: 'Get help from the Pro Upsells team.',
+    },
+    {
+      title: 'FAQ',
+      href: '/faq/',
+      description: 'Quick answers to common questions.',
+    },
+  ]}
+/>
